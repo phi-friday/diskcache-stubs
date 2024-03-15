@@ -1,6 +1,5 @@
 import sqlite3
 import warnings
-from pathlib import Path
 from typing import (
     Any,
     BinaryIO,
@@ -9,11 +8,13 @@ from typing import (
     ContextManager,
     Final,
     Generator,
+    Iterator,
     Literal,
     Protocol,
     overload,
 )
 
+from _typeshed import StrOrBytesPath
 from typing_extensions import Self, TypedDict, Unpack
 
 # type only: start
@@ -97,7 +98,7 @@ class Disk:
     pickle_protocol: int
     def __init__(
         self,
-        directory: str | Path,
+        directory: StrOrBytesPath,
         min_file_size: int = ...,
         pickle_protocol: int = ...,
     ) -> None: ...
@@ -178,13 +179,13 @@ class Disk:
     def filename(
         self, key: KeyType = ..., value: ValueType = ...
     ) -> tuple[str, str]: ...
-    def remove(self, file_path: str | Path) -> None: ...
+    def remove(self, file_path: StrOrBytesPath) -> None: ...
 
 class JSONDisk(Disk):
     compress_level: int
     def __init__(
         self,
-        directory: str | Path,
+        directory: StrOrBytesPath,
         compress_level: int = ...,
         *,
         # Disk init args
@@ -207,7 +208,7 @@ def args_to_key(
 class Cache:
     def __init__(
         self,
-        directory: str | Path | None = ...,
+        directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
         disk: type[Disk] = ...,
         **settings: Unpack[Settings],
@@ -722,7 +723,7 @@ class Cache:
         typed: bool = ...,
         expire: ExpireTime = ...,
         tag: Tag = ...,
-        ignore: Container = ...,
+        ignore: Ignore = ...,
     ) -> _Memoized[P, T]: ...
     def check(
         self, fix: bool = ..., retry: bool = ...
@@ -734,8 +735,8 @@ class Cache:
     def cull(self, retry: bool = ...) -> int: ...
     def clear(self, retry: bool = ...) -> int: ...
     def iterkeys(self, reverse: bool = ...) -> Generator[Any, None, None]: ...
-    def __iter__(self) -> Generator[Any, None, None]: ...
-    def __reversed__(self) -> Generator[Any, None, None]: ...
+    def __iter__(self) -> Iterator[Any]: ...
+    def __reversed__(self) -> Iterator[Any]: ...
     def stats(self, enable: bool = ..., reset: bool = ...) -> tuple[Any, Any]: ...
     def volume(self) -> int: ...
     def close(self) -> None: ...
