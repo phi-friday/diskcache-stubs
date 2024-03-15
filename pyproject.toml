@@ -23,7 +23,7 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/diskcache_stubs"]
+packages = ["src/diskcache"]
 
 [tool.pyright]
 pythonVersion = '3.8'
