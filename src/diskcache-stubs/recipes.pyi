@@ -1,82 +1,100 @@
-from .core import ENOVAL as ENOVAL, args_to_key as args_to_key, full_name as full_name
-from _typeshed import Incomplete
+from typing import Any, Callable, Protocol
+
+from typing_extensions import override
+
+from .core import ENOVAL as ENOVAL
+from .core import ExpireTime, Ignore, KeyType, Tag, _BaseCache
+from .core import args_to_key as args_to_key
+from .core import full_name as full_name
+
+__all__ = [
+    "Averager",
+    "Lock",
+    "RLock",
+    "BoundedSemaphore",
+    "throttle",
+    "barrier",
+    "memoize_stampede",
+]
 
 class Averager:
     def __init__(
-        self,
-        cache,
-        key,
-        expire: Incomplete | None = None,
-        tag: Incomplete | None = None,
+        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
-    def add(self, value) -> None: ...
-    def get(self): ...
-    def pop(self): ...
+    def add(self, value: float) -> None: ...
+    def get(self) -> float | None: ...
+    def pop(self) -> float | None: ...
 
-class Lock:
-    def __init__(
-        self,
-        cache,
-        key,
-        expire: Incomplete | None = None,
-        tag: Incomplete | None = None,
-    ) -> None: ...
-    def acquire(self) -> None: ...
-    def release(self) -> None: ...
-    def locked(self): ...
-    def __enter__(self) -> None: ...
-    def __exit__(self, *exc_info) -> None: ...
+class _Lock(Protocol):
+    def acquire(self) -> Any: ...
+    def release(self) -> Any: ...
+    def __enter__(self) -> Any: ...
+    def __exit__(self, *exc_info: object) -> Any: ...
 
-class RLock:
+class Lock(_Lock):
     def __init__(
-        self,
-        cache,
-        key,
-        expire: Incomplete | None = None,
-        tag: Incomplete | None = None,
+        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
+    def locked(self) -> bool: ...
+    @override
     def acquire(self) -> None: ...
+    @override
     def release(self) -> None: ...
+    @override
     def __enter__(self) -> None: ...
-    def __exit__(self, *exc_info) -> None: ...
+    @override
+    def __exit__(self, *exc_info: object) -> None: ...
+
+class RLock(_Lock):
+    def __init__(
+        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+    ) -> None: ...
+    @override
+    def acquire(self) -> None: ...
+    @override
+    def release(self) -> None: ...
+    @override
+    def __enter__(self) -> None: ...
+    @override
+    def __exit__(self, *exc_info: object) -> None: ...
 
 class BoundedSemaphore:
     def __init__(
         self,
-        cache,
-        key,
-        value: int = 1,
-        expire: Incomplete | None = None,
-        tag: Incomplete | None = None,
+        cache: _BaseCache,
+        key: KeyType,
+        value: int = ...,
+        expire: ExpireTime = ...,
+        tag: Tag = ...,
     ) -> None: ...
     def acquire(self) -> None: ...
     def release(self) -> None: ...
     def __enter__(self) -> None: ...
-    def __exit__(self, *exc_info) -> None: ...
+    def __exit__(self, *exc_info: object) -> None: ...
 
-def throttle(
-    cache,
-    count,
-    seconds,
-    name: Incomplete | None = None,
-    expire: Incomplete | None = None,
-    tag: Incomplete | None = None,
-    time_func=...,
-    sleep_func=...,
-): ...
-def barrier(
-    cache,
-    lock_factory,
-    name: Incomplete | None = None,
-    expire: Incomplete | None = None,
-    tag: Incomplete | None = None,
-): ...
-def memoize_stampede(
-    cache,
-    expire,
-    name: Incomplete | None = None,
-    typed: bool = False,
-    tag: Incomplete | None = None,
-    beta: int = 1,
-    ignore=(),
-): ...
+def throttle[**P, T](
+    cache: _BaseCache,
+    count: int,
+    seconds: float,
+    name: str | None = ...,
+    expire: ExpireTime = ...,
+    tag: Tag = ...,
+    time_func: Callable[[], float] = ...,
+    sleep_func: Callable[[float], Any] = ...,
+) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
+def barrier[**P, T](
+    cache: _BaseCache,
+    lock_factory: Callable[[_BaseCache, KeyType, ExpireTime, Tag], _Lock],
+    name: str | None = ...,
+    expire: ExpireTime = ...,
+    tag: Tag = ...,
+) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
+def memoize_stampede[**P, T](
+    cache: _BaseCache,
+    expire: float,
+    name: str | None = ...,
+    typed: bool = ...,
+    tag: Tag = ...,
+    beta: float = ...,
+    ignore: Ignore = ...,
+) -> Callable[[Callable[P, T]], Callable[P, T]]: ...

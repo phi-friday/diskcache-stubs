@@ -12,6 +12,8 @@ from .core import Timeout as Timeout
 from .persistent import Deque as Deque
 from .persistent import Index as Index
 
+__all__ = ["FanoutCache"]
+
 class FanoutCache(_BaseCache):
     def __init__(
         self,

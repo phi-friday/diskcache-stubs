@@ -17,6 +17,28 @@ from typing import (
 from _typeshed import StrOrBytesPath
 from typing_extensions import Self, TypedDict, Unpack
 
+__all__ = [
+    "DBNAME",
+    "ENOVAL",
+    "UNKNOWN",
+    "MODE_NONE",
+    "MODE_RAW",
+    "MODE_BINARY",
+    "MODE_TEXT",
+    "MODE_PICKLE",
+    "DEFAULT_SETTINGS",
+    "METADATA",
+    "EVICTION_POLICY",
+    "Cache",
+    "Disk",
+    "JSONDisk",
+    "args_to_key",
+    "full_name",
+    "Timeout",
+    "UnknownFileWarning",
+    "EmptyDirWarning",
+]
+
 # type only: start
 
 type DbName = Literal["cache.db"]
@@ -205,7 +227,7 @@ def args_to_key(
     ignore: Ignore,
 ) -> tuple[Any, ...]: ...
 
-class _BaseCache:
+class _BaseCache(Protocol):
     @property
     def directory(self) -> str: ...
     def transact(self, retry: bool = ...) -> ContextManager[None]: ...
