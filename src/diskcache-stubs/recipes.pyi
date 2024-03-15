@@ -59,7 +59,7 @@ class RLock(_Lock):
     def __exit__(self, *exc_info: object) -> None: ...
 
 class BoundedSemaphore:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         cache: _BaseCache,
         key: KeyType,
@@ -72,7 +72,7 @@ class BoundedSemaphore:
     def __enter__(self) -> None: ...
     def __exit__(self, *exc_info: object) -> None: ...
 
-def throttle[**P, T](
+def throttle[**P, T](  # noqa: PLR0913
     cache: _BaseCache,
     count: int,
     seconds: float,
@@ -89,7 +89,7 @@ def barrier[**P, T](
     expire: ExpireTime = ...,
     tag: Tag = ...,
 ) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
-def memoize_stampede[**P, T](
+def memoize_stampede[**P, T](  # noqa: PLR0913
     cache: _BaseCache,
     expire: float,
     name: str | None = ...,

@@ -100,7 +100,7 @@ class DefaultMetadata(Metadata, total=True): ...
 
 def full_name(func: Callable[..., Any]) -> str: ...
 
-class Constant[T: str](tuple[T]):
+class Constant[T: str](tuple[T]):  # noqa: SLOT001
     def __new__(cls, name: T) -> Self: ...
 
 DBNAME: Final[DbName]
@@ -215,7 +215,7 @@ class JSONDisk(Disk):
         pickle_protocol: int = ...,
     ) -> None: ...
 
-class Timeout(Exception): ...
+class Timeout(Exception): ...  # noqa: N818
 class UnknownFileWarning(UserWarning): ...
 class EmptyDirWarning(UserWarning): ...
 
@@ -228,10 +228,28 @@ def args_to_key(
 ) -> tuple[Any, ...]: ...
 
 class _BaseCache(Protocol):
+    ### Settings
+    statistics: int
+    tag_index: int
+    eviction_policy: str
+    size_limit: int
+    cull_limit: int
+    sqlite_auto_vacuum: int
+    sqlite_cache_size: int
+    sqlite_journal_mode: str
+    sqlite_mmap_size: int
+    sqlite_synchronous: int
+    disk_min_file_size: int
+    disk_pickle_protocol: int
+    ###
     @property
     def directory(self) -> str: ...
+    @property
+    def timeout(self) -> int: ...
+    @property
+    def disk(self) -> Disk: ...
     def transact(self, retry: bool = ...) -> ContextManager[None]: ...
-    def set(
+    def set(  # noqa: PLR0913
         self,
         key: KeyType,
         value: ValueType,
@@ -244,7 +262,7 @@ class _BaseCache(Protocol):
     def touch(
         self, key: KeyType, expire: ExpireTime = ..., retry: bool = ...
     ) -> bool: ...
-    def add(
+    def add(  # noqa: PLR0913
         self,
         key: KeyType,
         value: ValueType,
@@ -427,10 +445,6 @@ class Cache(_BaseCache):
         disk: type[Disk] = ...,
         **settings: Unpack[Settings],
     ) -> None: ...
-    @property
-    def timeout(self) -> int: ...
-    @property
-    def disk(self) -> Disk: ...
     def read(self, key: KeyType, retry: bool = ...) -> ValueType: ...
     @overload
     def push(
@@ -760,14 +774,14 @@ class Cache(_BaseCache):
         | tuple[KeyValuePair[Any], ExpireTime]
         | tuple[KeyValuePair[Any], ExpireTime, Tag]
     ): ...
-    def memoize[**P, T](
+    def memoize[**P, T](  # noqa: PLR0913
         self,
         name: str | None = ...,
         typed: bool = ...,
         expire: ExpireTime = ...,
         tag: Tag = ...,
         ignore: Ignore = ...,
-    ) -> _Memoized[P, T]: ...
+    ) -> Callable[[Callable[P, T]], _Memoized[P, T]]: ...
     def expire(self, now: ExpireTime = ..., retry: bool = ...) -> int: ...
     def iterkeys(self, reverse: bool = ...) -> Generator[Any, None, None]: ...
     def __getstate__(self) -> tuple[str, int, type[Disk]]: ...
