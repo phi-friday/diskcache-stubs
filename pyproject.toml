@@ -25,3 +25,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/diskcache_stubs"]
+
+[tool.pyright]
+pythonVersion = '3.8'
+pythonPlatform = 'Linux'
+diagnostic = 'basic'
