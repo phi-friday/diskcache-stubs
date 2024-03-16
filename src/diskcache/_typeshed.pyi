@@ -3,7 +3,7 @@ from typing import Any, Container, ContextManager, Iterator, Literal, Protocol, 
 
 from _typeshed import Incomplete
 from diskcache import Disk
-from typing_extensions import Self, TypedDict
+from typing_extensions import Self, TypedDict, TypeVar
 
 type DbName = Literal["cache.db"]
 type ModeNone = Literal[0]
@@ -302,3 +302,6 @@ class BaseCache(Protocol):
     def reset[T](self, key: str, value: T, update: bool = ...) -> T: ...
     @overload
     def reset(self, key: str, value: ValueType = ..., update: bool = ...) -> Any: ...
+
+_KeyT = TypeVar("_KeyT", bound=KeyType, default=KeyType)  # noqa: PYI018
+_ValueT = TypeVar("_ValueT", bound=ValueType, default=ValueType)  # noqa: PYI018
