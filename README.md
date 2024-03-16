@@ -4,6 +4,10 @@
 [![PyPI version](https://badge.fury.io/py/diskcache-stubs.svg)](https://badge.fury.io/py/diskcache-stubs)
 [![python version](https://img.shields.io/pypi/pyversions/diskcache-stubs.svg)](#)
 
+Warning: This library provides type hints only.
+If you need the runtime package,
+you can find it [`python-diskcache`](https://github.com/grantjenks/python-diskcache).
+
 ## how to install
 ```shell
 $ pip install diskcache-stubs
