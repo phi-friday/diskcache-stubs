@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, overload
 
 from _typeshed import StrOrBytesPath
 from diskcache.core import DEFAULT_SETTINGS as DEFAULT_SETTINGS
@@ -15,6 +15,7 @@ from ._typeshed import BaseCache, KeyType, Settings, ValueType
 __all__ = ["FanoutCache"]
 
 class FanoutCache(BaseCache):
+    @overload
     def __init__(
         self,
         directory: StrOrBytesPath | None = ...,
@@ -22,6 +23,17 @@ class FanoutCache(BaseCache):
         timeout: float = ...,
         disk: type[Disk] = ...,
         **settings: Unpack[Settings],
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        directory: StrOrBytesPath | None = ...,
+        shards: int = ...,
+        timeout: float = ...,
+        disk: type[Disk] = ...,
+        # https://peps.python.org/pep-0728/
+        # diskcache allow "disk_*" args
+        **settings: Any,
     ) -> None: ...
     def __getattr__(self, name: str) -> Any: ...
     def read(self, key: KeyType) -> ValueType: ...

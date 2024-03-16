@@ -180,12 +180,23 @@ def args_to_key(
 ) -> tuple[Any, ...]: ...
 
 class Cache(BaseCache):
+    @overload
     def __init__(
         self,
         directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
         disk: type[Disk] = ...,
         **settings: Unpack[Settings],
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        directory: StrOrBytesPath | None = ...,
+        timeout: int = ...,
+        disk: type[Disk] = ...,
+        # https://peps.python.org/pep-0728/
+        # diskcache allow "disk_*" args
+        **settings: Any,
     ) -> None: ...
     def read(self, key: KeyType, retry: bool = ...) -> ValueType: ...
     @overload
