@@ -15,6 +15,9 @@ classifiers = [
     "Typing :: Stubs Only",
 ]
 
+[project.urls]
+Repository = "https://github.com/phi-friday/diskcache-stubs"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
