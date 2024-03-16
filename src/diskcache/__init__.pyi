@@ -41,3 +41,10 @@ __all__ = [
     "memoize_stampede",
     "throttle",
 ]
+
+__title__: str
+__version__: str
+__build__: str
+__author__: str
+__license__: str
+__copyright__: str
