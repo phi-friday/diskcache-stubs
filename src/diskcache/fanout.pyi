@@ -1,20 +1,20 @@
 from typing import Any
 
 from _typeshed import StrOrBytesPath
+from diskcache.core import DEFAULT_SETTINGS as DEFAULT_SETTINGS
+from diskcache.core import ENOVAL as ENOVAL
+from diskcache.core import Cache as Cache
+from diskcache.core import Disk as Disk
+from diskcache.core import Timeout as Timeout
+from diskcache.persistent import Deque as Deque
+from diskcache.persistent import Index as Index
 from typing_extensions import Unpack
 
-from .core import DEFAULT_SETTINGS as DEFAULT_SETTINGS
-from .core import ENOVAL as ENOVAL
-from .core import Cache as Cache
-from .core import Disk as Disk
-from .core import KeyType, Settings, ValueType, _BaseCache
-from .core import Timeout as Timeout
-from .persistent import Deque as Deque
-from .persistent import Index as Index
+from ._typeshed import BaseCache, KeyType, Settings, ValueType
 
 __all__ = ["FanoutCache"]
 
-class FanoutCache(_BaseCache):
+class FanoutCache(BaseCache):
     def __init__(
         self,
         directory: StrOrBytesPath | None = ...,

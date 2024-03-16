@@ -2,10 +2,7 @@ from typing import Any, Callable, Protocol
 
 from typing_extensions import override
 
-from .core import ENOVAL as ENOVAL
-from .core import ExpireTime, Ignore, KeyType, Tag, _BaseCache
-from .core import args_to_key as args_to_key
-from .core import full_name as full_name
+from ._typeshed import BaseCache, ExpireTime, Ignore, KeyType, Tag
 
 __all__ = [
     "Averager",
@@ -19,7 +16,7 @@ __all__ = [
 
 class Averager:
     def __init__(
-        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     def add(self, value: float) -> None: ...
     def get(self) -> float | None: ...
@@ -33,7 +30,7 @@ class _Lock(Protocol):
 
 class Lock(_Lock):
     def __init__(
-        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     def locked(self) -> bool: ...
     @override
@@ -47,7 +44,7 @@ class Lock(_Lock):
 
 class RLock(_Lock):
     def __init__(
-        self, cache: _BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     @override
     def acquire(self) -> None: ...
@@ -61,7 +58,7 @@ class RLock(_Lock):
 class BoundedSemaphore:
     def __init__(  # noqa: PLR0913
         self,
-        cache: _BaseCache,
+        cache: BaseCache,
         key: KeyType,
         value: int = ...,
         expire: ExpireTime = ...,
@@ -73,7 +70,7 @@ class BoundedSemaphore:
     def __exit__(self, *exc_info: object) -> None: ...
 
 def throttle[**P, T](  # noqa: PLR0913
-    cache: _BaseCache,
+    cache: BaseCache,
     count: int,
     seconds: float,
     name: str | None = ...,
@@ -83,14 +80,14 @@ def throttle[**P, T](  # noqa: PLR0913
     sleep_func: Callable[[float], Any] = ...,
 ) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
 def barrier[**P, T](
-    cache: _BaseCache,
-    lock_factory: Callable[[_BaseCache, KeyType, ExpireTime, Tag], _Lock],
+    cache: BaseCache,
+    lock_factory: Callable[[BaseCache, KeyType, ExpireTime, Tag], _Lock],
     name: str | None = ...,
     expire: ExpireTime = ...,
     tag: Tag = ...,
 ) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
 def memoize_stampede[**P, T](  # noqa: PLR0913
-    cache: _BaseCache,
+    cache: BaseCache,
     expire: float,
     name: str | None = ...,
     typed: bool = ...,

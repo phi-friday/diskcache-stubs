@@ -12,27 +12,28 @@ from typing import (
 )
 
 from _typeshed import StrOrBytesPath
+from diskcache.core import Cache
 from typing_extensions import Self
 
-from .core import ENOVAL as ENOVAL
-from .core import Cache as Cache
-from .core import (
+from ._typeshed import (
     Ignore,
     KeyType,
     KeyValuePair,
+    Memoized,
     NullablePair,
     ServerSide,
     ValueType,
-    _Memoized,
 )
 
 __all__ = ["Deque", "Index"]
+
+_AnyDefault: Iterable[Any] = ()
 
 class Deque[T: Any](Sequence[T]):
     __hash__: None
     def __init__(
         self,
-        iterable: Iterable[T] = (),
+        iterable: Iterable[T] = _AnyDefault,  # noqa: PYI011
         directory: StrOrBytesPath | None = ...,
         maxlen: int | None = ...,
     ) -> None: ...
@@ -142,5 +143,5 @@ class Index[K: KeyType, V: ValueType](MutableMapping[K, V]):
     def __ne__(self, other: object) -> bool: ...
     def memoize[**P, T](
         self, name: str | None = ..., typed: bool = ..., ignore: Ignore = ...
-    ) -> Callable[[Callable[P, T]], _Memoized[P, T]]: ...
+    ) -> Callable[[Callable[P, T]], Memoized[P, T]]: ...
     def transact(self) -> ContextManager[None]: ...
