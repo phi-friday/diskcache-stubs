@@ -50,7 +50,19 @@ class Settings(TypedDict, total=False):
     disk_min_file_size: int
     disk_pickle_protocol: int
 
-class DefaultSettings(Settings, total=True): ...
+class DefaultSettings(Settings, total=True):
+    statistics: int
+    tag_index: int
+    eviction_policy: str
+    size_limit: int
+    cull_limit: int
+    sqlite_auto_vacuum: int
+    sqlite_cache_size: int
+    sqlite_journal_mode: str
+    sqlite_mmap_size: int
+    sqlite_synchronous: int
+    disk_min_file_size: int
+    disk_pickle_protocol: int
 
 class Metadata(TypedDict, total=False):
     count: int
@@ -58,9 +70,13 @@ class Metadata(TypedDict, total=False):
     hits: int
     misses: int
 
-class DefaultMetadata(Metadata, total=True): ...
-class InitSettings(Settings, Metadata, total=False): ...
+class DefaultMetadata(Metadata, total=True):
+    count: int
+    size: int
+    hits: int
+    misses: int
 
+class InitSettings(Settings, Metadata, total=False): ...
 
 class BaseCache(Protocol):
     ### Settings
