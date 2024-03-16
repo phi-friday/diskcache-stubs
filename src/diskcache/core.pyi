@@ -14,6 +14,7 @@ from ._typeshed import (
     EvictionPolicyKey,
     ExpireTime,
     Ignore,
+    InitSettings,
     KeyType,
     KeyValuePair,
     Memoized,
@@ -25,7 +26,6 @@ from ._typeshed import (
     ModeText,
     NullablePair,
     ServerSide,
-    Settings,
     Tag,
     UnknownType,
     ValueType,
@@ -186,7 +186,7 @@ class Cache(BaseCache):
         directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
         disk: type[Disk] = ...,
-        **settings: Unpack[Settings],
+        **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
     def __init__(
@@ -194,6 +194,7 @@ class Cache(BaseCache):
         directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
         disk: type[Disk] = ...,
+        # FIXME
         # https://peps.python.org/pep-0728/
         # diskcache allow "disk_*" args
         **settings: Any,

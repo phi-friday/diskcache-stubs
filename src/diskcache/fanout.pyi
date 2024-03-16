@@ -10,7 +10,7 @@ from diskcache.persistent import Deque as Deque
 from diskcache.persistent import Index as Index
 from typing_extensions import Unpack
 
-from ._typeshed import BaseCache, KeyType, Settings, ValueType
+from ._typeshed import BaseCache, InitSettings, KeyType, ValueType
 
 __all__ = ["FanoutCache"]
 
@@ -22,7 +22,7 @@ class FanoutCache(BaseCache):
         shards: int = ...,
         timeout: float = ...,
         disk: type[Disk] = ...,
-        **settings: Unpack[Settings],
+        **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
     def __init__(
@@ -31,6 +31,7 @@ class FanoutCache(BaseCache):
         shards: int = ...,
         timeout: float = ...,
         disk: type[Disk] = ...,
+        # FIXME
         # https://peps.python.org/pep-0728/
         # diskcache allow "disk_*" args
         **settings: Any,
@@ -38,12 +39,24 @@ class FanoutCache(BaseCache):
     def __getattr__(self, name: str) -> Any: ...
     def read(self, key: KeyType) -> ValueType: ...
     def expire(self, retry: bool = ...) -> int: ...
+    @overload
     def cache(
         self,
         name: str,
         timeout: int = ...,
         disk: type[Disk] | None = ...,
-        **settings: Unpack[Settings],
+        **settings: Unpack[InitSettings],
+    ) -> Cache: ...
+    @overload
+    def cache(
+        self,
+        name: str,
+        timeout: int = ...,
+        disk: type[Disk] | None = ...,
+        # FIXME
+        # https://peps.python.org/pep-0728/
+        # diskcache allow "disk_*" args
+        **settings: Any,
     ) -> Cache: ...
     def deque(self, name: str, maxlen: int | None = ...) -> Deque[Any]: ...
     def index(self, name: str) -> Index[Any, Any]: ...

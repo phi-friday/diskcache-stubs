@@ -59,6 +59,8 @@ class Metadata(TypedDict, total=False):
     misses: int
 
 class DefaultMetadata(Metadata, total=True): ...
+class InitSettings(Settings, Metadata, total=False): ...
+
 
 class BaseCache(Protocol):
     ### Settings
