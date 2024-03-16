@@ -66,9 +66,9 @@ MODE_RAW: Final[ModeRaw]
 MODE_BINARY: Final[ModeBinary]
 MODE_TEXT: Final[ModeText]
 MODE_PICKLE: Final[ModePickle]
-DEFAULT_SETTINGS: DefaultSettings
-METADATA: DefaultMetadata
-EVICTION_POLICY: dict[EvictionPolicyKey, EvictionPolicyItem]
+DEFAULT_SETTINGS: Final[DefaultSettings]
+METADATA: Final[DefaultMetadata]
+EVICTION_POLICY: Final[dict[EvictionPolicyKey, EvictionPolicyItem]]
 
 class Disk:
     min_file_size: int
