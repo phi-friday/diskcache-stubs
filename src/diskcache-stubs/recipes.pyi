@@ -1,6 +1,6 @@
 from typing import Any, Callable, Protocol
 
-from typing_extensions import override
+from typing_extensions import ParamSpec, TypeVar, override
 
 from ._typeshed import BaseCache, ExpireTime, Ignore, KeyType, Tag
 
@@ -13,6 +13,9 @@ __all__ = [
     "barrier",
     "memoize_stampede",
 ]
+
+_T = TypeVar("_T", infer_variance=True)
+_P = ParamSpec("_P")
 
 class Averager:
     def __init__(
@@ -69,7 +72,7 @@ class BoundedSemaphore:
     def __enter__(self) -> None: ...
     def __exit__(self, *exc_info: object) -> None: ...
 
-def throttle[**P, T](  # noqa: PLR0913
+def throttle(  # noqa: PLR0913
     cache: BaseCache,
     count: int,
     seconds: float,
@@ -78,15 +81,15 @@ def throttle[**P, T](  # noqa: PLR0913
     tag: Tag = ...,
     time_func: Callable[[], float] = ...,
     sleep_func: Callable[[float], Any] = ...,
-) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
-def barrier[**P, T](
+) -> Callable[[Callable[_P, _T]], Callable[_P, _T]]: ...
+def barrier(
     cache: BaseCache,
     lock_factory: Callable[[BaseCache, KeyType, ExpireTime, Tag], _Lock],
     name: str | None = ...,
     expire: ExpireTime = ...,
     tag: Tag = ...,
-) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
-def memoize_stampede[**P, T](  # noqa: PLR0913
+) -> Callable[[Callable[_P, _T]], Callable[_P, _T]]: ...
+def memoize_stampede(  # noqa: PLR0913
     cache: BaseCache,
     expire: float,
     name: str | None = ...,
@@ -94,4 +97,4 @@ def memoize_stampede[**P, T](  # noqa: PLR0913
     tag: Tag = ...,
     beta: float = ...,
     ignore: Ignore = ...,
-) -> Callable[[Callable[P, T]], Callable[P, T]]: ...
+) -> Callable[[Callable[_P, _T]], Callable[_P, _T]]: ...

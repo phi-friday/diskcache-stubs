@@ -14,7 +14,7 @@ from typing import (
 
 from _typeshed import StrOrBytesPath
 from diskcache.core import Cache
-from typing_extensions import Self
+from typing_extensions import ParamSpec, Self, TypeVar
 
 from ._typeshed import (
     Ignore,
@@ -29,7 +29,13 @@ from ._typeshed import (
 
 __all__ = ["Deque", "Index"]
 
+_T = TypeVar("_T", infer_variance=True)
+_P = ParamSpec("_P")
 _AnyDefault: Iterable[Any] = ()
+_AnyT = TypeVar("_AnyT", bound=Any, infer_variance=True)
+_ValueWithoutDefaultT = TypeVar(
+    "_ValueWithoutDefaultT", bound=ValueType, infer_variance=True
+)
 
 class Deque(Sequence[_ValueT], Generic[_ValueT]):
     __hash__: None
@@ -41,9 +47,9 @@ class Deque(Sequence[_ValueT], Generic[_ValueT]):
     ) -> None: ...
     @overload
     @classmethod
-    def fromcache[T2: Any](
-        cls, cache: Cache, iterable: Iterable[T2], maxlen: int | None = ...
-    ) -> Deque[T2]: ...
+    def fromcache(
+        cls, cache: Cache, iterable: Iterable[_AnyT], maxlen: int | None = ...
+    ) -> Deque[_AnyT]: ...
     @overload
     @classmethod
     def fromcache(
@@ -92,9 +98,9 @@ class Index(MutableMapping[_KeyT, _ValueT], Generic[_KeyT, _ValueT]):
     __hash__: None
     def __init__(self, *args: Any, **kwargs: Any) -> None: ...
     @classmethod
-    def fromcache[V2: ValueType](
-        cls, cache: Cache, *args: Any, **kwargs: V2
-    ) -> Index[str, V2]: ...
+    def fromcache(
+        cls, cache: Cache, *args: Any, **kwargs: _ValueWithoutDefaultT
+    ) -> Index[str, _ValueWithoutDefaultT]: ...
     @property
     def cache(self) -> Cache: ...
     @property
@@ -147,7 +153,7 @@ class Index(MutableMapping[_KeyT, _ValueT], Generic[_KeyT, _ValueT]):
     def __setstate__(self, state: str) -> None: ...
     def __eq__(self, other: object) -> bool: ...
     def __ne__(self, other: object) -> bool: ...
-    def memoize[**P, T](
+    def memoize(
         self, name: str | None = ..., typed: bool = ..., ignore: Ignore = ...
-    ) -> Callable[[Callable[P, T]], Memoized[P, T]]: ...
+    ) -> Callable[[Callable[_P, _T]], Memoized[_P, _T]]: ...
     def transact(self) -> ContextManager[None]: ...

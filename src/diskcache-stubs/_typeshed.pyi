@@ -3,38 +3,42 @@ from typing import Any, Container, ContextManager, Iterator, Literal, Protocol, 
 
 from _typeshed import Incomplete
 from diskcache import Disk
-from typing_extensions import Self, TypedDict, TypeVar
+from typing_extensions import ParamSpec, Self, TypeAlias, TypedDict, TypeVar
 
-type DbName = Literal["cache.db"]
-type ModeNone = Literal[0]
-type ModeRaw = Literal[1]
-type ModeBinary = Literal[2]
-type ModeText = Literal[3]
-type ModePickle = Literal[4]
-type ModeLiteral = ModeNone | ModeRaw | ModeBinary | ModeText | ModePickle
-type EnovalType = Literal["ENOVAL"]
-type UnknownType = Literal["UNKNOWN"]
+_T = TypeVar("_T", infer_variance=True)
+_P = ParamSpec("_P")
+_IntOrStrT = TypeVar("_IntOrStrT", bound=int | str, infer_variance=True)
 
-type KeyType = Any
-type ValueType = Any
-type ExpireTime = float | None
-type Tag = str | None
-type Ignore = Container[int | str]
+DbName: TypeAlias = Literal["cache.db"]
+ModeNone: TypeAlias = Literal[0]
+ModeRaw: TypeAlias = Literal[1]
+ModeBinary: TypeAlias = Literal[2]
+ModeText: TypeAlias = Literal[3]
+ModePickle: TypeAlias = Literal[4]
+ModeLiteral: TypeAlias = ModeNone | ModeRaw | ModeBinary | ModeText | ModePickle
+EnovalType: TypeAlias = Literal["ENOVAL"]
+UnknownType: TypeAlias = Literal["UNKNOWN"]
 
-type ServerSide = Literal["back", "front"]
-type KeyValuePair[T: int | str] = tuple[T, ValueType]
-type NullPair = tuple[None, None]
-type NullablePair[T: int | str] = KeyValuePair[T] | NullPair
+KeyType: TypeAlias = Any
+ValueType: TypeAlias = Any
+ExpireTime: TypeAlias = float | None
+Tag: TypeAlias = str | None
+Ignore: TypeAlias = Container[int | str]
 
-type EvictionPolicyKey = Literal[
+ServerSide: TypeAlias = Literal["back", "front"]
+KeyValuePair: TypeAlias = tuple[_IntOrStrT, ValueType]
+NullPair: TypeAlias = tuple[None, None]
+NullablePair: TypeAlias = KeyValuePair[_IntOrStrT] | NullPair
+
+EvictionPolicyKey: TypeAlias = Literal[
     "none", "least-recently-stored", "least-recently-used", "least-frequently-used"
 ]
-type EvictionPolicyItemKey = Literal["init", "get", "cull"]
-type EvictionPolicyItem = dict[EvictionPolicyItemKey, str | None]
+EvictionPolicyItemKey: TypeAlias = Literal["init", "get", "cull"]
+EvictionPolicyItem: TypeAlias = dict[EvictionPolicyItemKey, str | None]
 
-class Memoized[**P, T](Protocol):
-    def __call__(self, *args: P.args, **kwds: P.kwargs) -> T: ...
-    def __cache_key__(self, *args: P.args, **kwds: P.kwargs) -> tuple[Any, ...]: ...
+class Memoized(Protocol[_P, _T]):
+    def __call__(self, *args: _P.args, **kwds: _P.kwargs) -> _T: ...
+    def __cache_key__(self, *args: _P.args, **kwds: _P.kwargs) -> tuple[Any, ...]: ...
 
 class Settings(TypedDict, total=False):
     statistics: int
@@ -317,7 +321,7 @@ class BaseCache(Protocol):
     def __exit__(self, *exception: object) -> None: ...
     def __len__(self) -> int: ...
     @overload
-    def reset[T](self, key: str, value: T, update: bool = ...) -> T: ...
+    def reset(self, key: str, value: _T, update: bool = ...) -> _T: ...
     @overload
     def reset(self, key: str, value: ValueType = ..., update: bool = ...) -> Any: ...
 
