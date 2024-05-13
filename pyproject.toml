@@ -3,7 +3,9 @@ name = "diskcache-stubs"
 version = "0.0.0"
 description = "diskcache stubs"
 authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
-dependencies = []
+dependencies = [
+    "typing-extensions>=4.4.0",
+]
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">= 3"
