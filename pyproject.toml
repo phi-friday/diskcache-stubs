@@ -26,7 +26,10 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = ["diskcache>=5.6.3"]
+dev-dependencies = [
+    "diskcache>=5.6.3",
+    "ruff==0.4.4",
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true
