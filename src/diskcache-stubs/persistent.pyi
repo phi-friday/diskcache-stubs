@@ -38,7 +38,7 @@ _ValueWithoutDefaultT = TypeVar(
 )
 
 class Deque(Sequence[_ValueT], Generic[_ValueT]):
-    __hash__: None
+    __hash__: None  # type: ignore[assignment]
     def __init__(
         self,
         iterable: Iterable[_ValueT] = _AnyDefault,  # noqa: PYI011
@@ -63,7 +63,7 @@ class Deque(Sequence[_ValueT], Generic[_ValueT]):
     def maxlen(self) -> int: ...
     @maxlen.setter
     def maxlen(self, value: int) -> None: ...
-    def __getitem__(self, index: int) -> ValueType: ...
+    def __getitem__(self, index: int) -> ValueType: ...  # type: ignore[override]
     def __setitem__(self, index: int, value: ValueType) -> None: ...
     def __delitem__(self, index: int) -> None: ...
     def __eq__(self, value: object) -> bool: ...
@@ -95,7 +95,7 @@ class Deque(Sequence[_ValueT], Generic[_ValueT]):
     def transact(self) -> ContextManager[None]: ...
 
 class Index(MutableMapping[_KeyT, _ValueT], Generic[_KeyT, _ValueT]):
-    __hash__: None
+    __hash__: None  # type: ignore[assignment]
     def __init__(self, *args: Any, **kwargs: Any) -> None: ...
     @classmethod
     def fromcache(

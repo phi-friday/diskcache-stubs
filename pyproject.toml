@@ -3,9 +3,7 @@ name = "diskcache-stubs"
 version = "0.0.0"
 description = "diskcache stubs"
 authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
-dependencies = [
-    "typing-extensions>=4.4.0",
-]
+dependencies = ["typing-extensions>=4.4.0"]
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">= 3"
@@ -44,3 +42,10 @@ pythonVersion = '3.8'
 pythonPlatform = 'Linux'
 diagnostic = 'basic'
 stubPath = "./typings"
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+exclude = ["^src/diskcache-stubs/djangocache.pyi"]
+# https://github.com/python/mypy/issues/15238
+disable_error_code = "valid-type,type-arg,overload-overlap,misc,operator" # FIXME: PEP695
