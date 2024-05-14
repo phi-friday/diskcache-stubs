@@ -46,7 +46,5 @@ stubPath = "./typings"
 [tool.mypy]
 python_version = "3.8"
 strict = true
-exclude = ["^src/diskcache-stubs/djangocache.pyi"]
-# https://github.com/python/mypy/issues/15238
 disable_error_code = "import-untyped,overload-overlap"
 disallow_subclassing_any = false

@@ -79,7 +79,25 @@ class DefaultMetadata(TypedDict, total=True):
     hits: int
     misses: int
 
-class InitSettings(Settings, Metadata, total=False): ...
+class InitSettings(TypedDict, total=False):
+    # settings
+    statistics: int
+    tag_index: int
+    eviction_policy: str
+    size_limit: int
+    cull_limit: int
+    sqlite_auto_vacuum: int
+    sqlite_cache_size: int
+    sqlite_journal_mode: str
+    sqlite_mmap_size: int
+    sqlite_synchronous: int
+    disk_min_file_size: int
+    disk_pickle_protocol: int
+    # metadata
+    count: int
+    size: int
+    hits: int
+    misses: int
 
 class BaseCache(Protocol):
     ### Settings

@@ -25,7 +25,7 @@ class FanoutCache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
-    def __init__(  # type: ignore[misc]
+    def __init__(
         self,
         directory: StrOrBytesPath | None = ...,
         shards: int = ...,
@@ -48,7 +48,7 @@ class FanoutCache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> Cache: ...
     @overload
-    def cache(  # type: ignore[misc]
+    def cache(
         self,
         name: str,
         timeout: int = ...,

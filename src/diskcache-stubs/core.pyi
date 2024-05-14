@@ -143,11 +143,11 @@ class Disk:
         self, mode: ModeBinary, filename: str, value: Any, read: bool
     ) -> BinaryIO | bytes: ...
     @overload
-    def fetch(self, mode: ModeText, filename: str, value: Any, read: bool) -> str: ...  # type: ignore[misc]
+    def fetch(self, mode: ModeText, filename: str, value: Any, read: bool) -> str: ...
     @overload
-    def fetch(self, mode: ModePickle, filename: str, value: Any, read: bool) -> Any: ...  # type: ignore[misc]
+    def fetch(self, mode: ModePickle, filename: str, value: Any, read: bool) -> Any: ...
     @overload
-    def fetch(  # type: ignore[misc]
+    def fetch(
         self, mode: ModeLiteral, filename: str, value: Any, read: bool
     ) -> Any: ...
     def filename(self, key: Any = ..., value: Any = ...) -> tuple[str, str]: ...
@@ -187,7 +187,7 @@ class Cache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
-    def __init__(  # type: ignore[misc]
+    def __init__(
         self,
         directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
