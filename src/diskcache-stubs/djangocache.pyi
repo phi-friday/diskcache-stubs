@@ -1,4 +1,5 @@
 # ruff: noqa
+# mypy: ignore-errors
 from _typeshed import Incomplete
 from django.core.cache.backends.base import BaseCache
 

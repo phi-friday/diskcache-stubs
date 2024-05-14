@@ -14,7 +14,7 @@ __all__ = [
     "memoize_stampede",
 ]
 
-_T = TypeVar("_T", infer_variance=True)
+_T = TypeVar("_T")
 _P = ParamSpec("_P")
 
 class Averager:

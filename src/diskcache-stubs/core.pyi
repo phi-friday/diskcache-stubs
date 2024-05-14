@@ -53,11 +53,11 @@ __all__ = [
     "EmptyDirWarning",
 ]
 
-_T = TypeVar("_T", infer_variance=True)
+_T = TypeVar("_T")
 _P = ParamSpec("_P")
-_BoundStrT = TypeVar("_BoundStrT", bound=str, infer_variance=True)
-_PutT1 = TypeVar("_PutT1", bound=str | int | float, infer_variance=True)
-_PutT2 = TypeVar("_PutT2", bound=int | float, infer_variance=True)
+_BoundStrT = TypeVar("_BoundStrT", bound=str)
+_PutT1 = TypeVar("_PutT1", bound=str | int | float)
+_PutT2 = TypeVar("_PutT2", bound=int | float)
 
 def full_name(func: Callable[..., Any]) -> str: ...
 

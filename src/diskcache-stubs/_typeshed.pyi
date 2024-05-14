@@ -5,9 +5,10 @@ from _typeshed import Incomplete
 from diskcache import Disk
 from typing_extensions import ParamSpec, Self, TypeAlias, TypedDict, TypeVar
 
-_T = TypeVar("_T", infer_variance=True)
+_T = TypeVar("_T")
+_T_co = TypeVar("_T_co", covariant=True)
 _P = ParamSpec("_P")
-_IntOrStrT = TypeVar("_IntOrStrT", bound=int | str, infer_variance=True)
+_IntOrStrT = TypeVar("_IntOrStrT", bound=int | str)
 
 DbName: TypeAlias = Literal["cache.db"]
 ModeNone: TypeAlias = Literal[0]
@@ -36,8 +37,8 @@ EvictionPolicyKey: TypeAlias = Literal[
 EvictionPolicyItemKey: TypeAlias = Literal["init", "get", "cull"]
 EvictionPolicyItem: TypeAlias = dict[EvictionPolicyItemKey, str | None]
 
-class Memoized(Protocol[_P, _T]):
-    def __call__(self, *args: _P.args, **kwds: _P.kwargs) -> _T: ...
+class Memoized(Protocol[_P, _T_co]):
+    def __call__(self, *args: _P.args, **kwds: _P.kwargs) -> _T_co: ...
     def __cache_key__(self, *args: _P.args, **kwds: _P.kwargs) -> tuple[Any, ...]: ...
 
 class Settings(TypedDict, total=False):
@@ -54,7 +55,7 @@ class Settings(TypedDict, total=False):
     disk_min_file_size: int
     disk_pickle_protocol: int
 
-class DefaultSettings(Settings, total=True):
+class DefaultSettings(TypedDict, total=True):
     statistics: int
     tag_index: int
     eviction_policy: str
@@ -74,7 +75,7 @@ class Metadata(TypedDict, total=False):
     hits: int
     misses: int
 
-class DefaultMetadata(Metadata, total=True):
+class DefaultMetadata(TypedDict, total=True):
     count: int
     size: int
     hits: int
@@ -324,6 +325,3 @@ class BaseCache(Protocol):
     def reset(self, key: str, value: _T, update: bool = ...) -> _T: ...
     @overload
     def reset(self, key: str, value: ValueType = ..., update: bool = ...) -> Any: ...
-
-_KeyT = TypeVar("_KeyT", bound=KeyType, default=KeyType)  # noqa: PYI018
-_ValueT = TypeVar("_ValueT", bound=ValueType, default=ValueType)  # noqa: PYI018

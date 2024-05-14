@@ -18,24 +18,23 @@ from typing_extensions import ParamSpec, Self, TypeVar
 
 from ._typeshed import (
     Ignore,
+    KeyType,
     KeyValuePair,
     Memoized,
     NullablePair,
     ServerSide,
     ValueType,
-    _KeyT,
-    _ValueT,
 )
 
 __all__ = ["Deque", "Index"]
 
-_T = TypeVar("_T", infer_variance=True)
+_T = TypeVar("_T")
 _P = ParamSpec("_P")
 _AnyDefault: Iterable[Any] = ()
-_AnyT = TypeVar("_AnyT", bound=Any, infer_variance=True)
-_ValueWithoutDefaultT = TypeVar(
-    "_ValueWithoutDefaultT", bound=ValueType, infer_variance=True
-)
+_AnyT = TypeVar("_AnyT", bound=Any)
+_ValueWithoutDefaultT = TypeVar("_ValueWithoutDefaultT", bound=ValueType)
+_KeyT = TypeVar("_KeyT", bound=KeyType, default=KeyType)
+_ValueT = TypeVar("_ValueT", bound=ValueType, default=ValueType)
 
 class Deque(Sequence[_ValueT], Generic[_ValueT]):
     __hash__: None  # type: ignore[assignment]
