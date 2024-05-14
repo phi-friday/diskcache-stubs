@@ -2,7 +2,7 @@ from typing import Any, Callable, Protocol
 
 from typing_extensions import ParamSpec, TypeVar, override
 
-from ._typeshed import BaseCache, ExpireTime, Ignore, KeyType, Tag
+from ._typeshed import BaseCache, ExpireTime, Ignore, Tag
 
 __all__ = [
     "Averager",
@@ -19,7 +19,7 @@ _P = ParamSpec("_P")
 
 class Averager:
     def __init__(
-        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: Any, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     def add(self, value: float) -> None: ...
     def get(self) -> float | None: ...
@@ -33,7 +33,7 @@ class _Lock(Protocol):
 
 class Lock(_Lock):
     def __init__(
-        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: Any, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     def locked(self) -> bool: ...
     @override
@@ -47,7 +47,7 @@ class Lock(_Lock):
 
 class RLock(_Lock):
     def __init__(
-        self, cache: BaseCache, key: KeyType, expire: ExpireTime = ..., tag: Tag = ...
+        self, cache: BaseCache, key: Any, expire: ExpireTime = ..., tag: Tag = ...
     ) -> None: ...
     @override
     def acquire(self) -> None: ...
@@ -62,7 +62,7 @@ class BoundedSemaphore:
     def __init__(  # noqa: PLR0913
         self,
         cache: BaseCache,
-        key: KeyType,
+        key: Any,
         value: int = ...,
         expire: ExpireTime = ...,
         tag: Tag = ...,
@@ -84,7 +84,7 @@ def throttle(  # noqa: PLR0913
 ) -> Callable[[Callable[_P, _T]], Callable[_P, _T]]: ...
 def barrier(
     cache: BaseCache,
-    lock_factory: Callable[[BaseCache, KeyType, ExpireTime, Tag], _Lock],
+    lock_factory: Callable[[BaseCache, Any, ExpireTime, Tag], _Lock],
     name: str | None = ...,
     expire: ExpireTime = ...,
     tag: Tag = ...,

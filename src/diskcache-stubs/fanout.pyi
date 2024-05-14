@@ -10,7 +10,7 @@ from diskcache.persistent import Deque as Deque
 from diskcache.persistent import Index as Index
 from typing_extensions import Unpack
 
-from ._typeshed import BaseCache, InitSettings, KeyType, ValueType
+from ._typeshed import BaseCache, InitSettings
 
 __all__ = ["FanoutCache"]
 
@@ -25,7 +25,7 @@ class FanoutCache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
-    def __init__(
+    def __init__(  # type: ignore[misc]
         self,
         directory: StrOrBytesPath | None = ...,
         shards: int = ...,
@@ -37,7 +37,7 @@ class FanoutCache(BaseCache):
         **settings: Any,
     ) -> None: ...
     def __getattr__(self, name: str) -> Any: ...
-    def read(self, key: KeyType) -> ValueType: ...
+    def read(self, key: Any) -> Any: ...
     def expire(self, retry: bool = ...) -> int: ...
     @overload
     def cache(
@@ -48,7 +48,7 @@ class FanoutCache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> Cache: ...
     @overload
-    def cache(
+    def cache(  # type: ignore[misc]
         self,
         name: str,
         timeout: int = ...,

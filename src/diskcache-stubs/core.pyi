@@ -15,7 +15,6 @@ from ._typeshed import (
     ExpireTime,
     Ignore,
     InitSettings,
-    KeyType,
     KeyValuePair,
     Memoized,
     ModeBinary,
@@ -28,7 +27,6 @@ from ._typeshed import (
     ServerSide,
     Tag,
     UnknownType,
-    ValueType,
 )
 
 __all__ = [
@@ -85,43 +83,43 @@ class Disk:
         min_file_size: int = ...,
         pickle_protocol: int = ...,
     ) -> None: ...
-    def hash(self, key: KeyType) -> int: ...
+    def hash(self, key: Any) -> int: ...
     @overload
     def put(self, key: bytes) -> tuple[sqlite3.Binary, Literal[True]]: ...
     @overload
     def put(self, key: _PutT1) -> tuple[_PutT1, Literal[True]]: ...
     @overload
-    def put(self, key: KeyType) -> tuple[sqlite3.Binary, Literal[False]]: ...
+    def put(self, key: Any) -> tuple[sqlite3.Binary, Literal[False]]: ...
     @overload
     def get(self, key: sqlite3.Binary, raw: Literal[True]) -> bytes: ...
     @overload
     def get(self, key: _T, raw: Literal[True]) -> bytes | _T: ...
     @overload
-    def get(self, key: KeyType, raw: Literal[False]) -> Any: ...
+    def get(self, key: Any, raw: Literal[False]) -> Any: ...
     @overload
-    def get(self, key: KeyType, raw: bool) -> Any: ...
+    def get(self, key: Any, raw: bool) -> Any: ...
     @overload
     def store(
-        self, value: _PutT2, read: bool, key: KeyType = ...
+        self, value: _PutT2, read: bool, key: Any = ...
     ) -> tuple[Literal[0], ModeRaw, None, _PutT2]: ...
     @overload
     def store(
-        self, value: bytes, read: bool, key: KeyType = ...
+        self, value: bytes, read: bool, key: Any = ...
     ) -> (
         tuple[Literal[0], ModeRaw, None, sqlite3.Binary]
         | tuple[int, ModeBinary, str, None]
     ): ...
     @overload
     def store(
-        self, value: str, read: bool, key: KeyType = ...
+        self, value: str, read: bool, key: Any = ...
     ) -> tuple[Literal[0], ModeRaw, None, str] | tuple[int, ModeText, str, None]: ...
     @overload
     def store(
-        self, value: ValueType, read: Literal[True], key: KeyType = ...
+        self, value: Any, read: Literal[True], key: Any = ...
     ) -> tuple[int, ModeBinary, str, None]: ...
     @overload
     def store(
-        self, value: ValueType, read: bool, key: KeyType = ...
+        self, value: Any, read: bool, key: Any = ...
     ) -> (
         tuple[Literal[0], ModePickle, None, sqlite3.Binary]
         | tuple[int, ModePickle, str, None]
@@ -134,31 +132,25 @@ class Disk:
     def fetch(self, mode: ModeRaw, filename: str, value: _T, read: bool) -> _T: ...
     @overload
     def fetch(
-        self, mode: ModeBinary, filename: str, value: ValueType, read: Literal[True]
+        self, mode: ModeBinary, filename: str, value: Any, read: Literal[True]
     ) -> BinaryIO: ...
     @overload
     def fetch(
-        self, mode: ModeBinary, filename: str, value: ValueType, read: Literal[False]
+        self, mode: ModeBinary, filename: str, value: Any, read: Literal[False]
     ) -> BinaryIO: ...
     @overload
     def fetch(
-        self, mode: ModeBinary, filename: str, value: ValueType, read: bool
+        self, mode: ModeBinary, filename: str, value: Any, read: bool
     ) -> BinaryIO | bytes: ...
     @overload
-    def fetch(
-        self, mode: ModeText, filename: str, value: ValueType, read: bool
-    ) -> str: ...
+    def fetch(self, mode: ModeText, filename: str, value: Any, read: bool) -> str: ...  # type: ignore[misc]
     @overload
-    def fetch(
-        self, mode: ModePickle, filename: str, value: ValueType, read: bool
-    ) -> ValueType: ...
+    def fetch(self, mode: ModePickle, filename: str, value: Any, read: bool) -> Any: ...  # type: ignore[misc]
     @overload
-    def fetch(
-        self, mode: ModeLiteral, filename: str, value: ValueType, read: bool
-    ) -> ValueType: ...
-    def filename(
-        self, key: KeyType = ..., value: ValueType = ...
-    ) -> tuple[str, str]: ...
+    def fetch(  # type: ignore[misc]
+        self, mode: ModeLiteral, filename: str, value: Any, read: bool
+    ) -> Any: ...
+    def filename(self, key: Any = ..., value: Any = ...) -> tuple[str, str]: ...
     def remove(self, file_path: StrOrBytesPath) -> None: ...
 
 class JSONDisk(Disk):
@@ -195,7 +187,7 @@ class Cache(BaseCache):
         **settings: Unpack[InitSettings],
     ) -> None: ...
     @overload
-    def __init__(
+    def __init__(  # type: ignore[misc]
         self,
         directory: StrOrBytesPath | None = ...,
         timeout: int = ...,
@@ -205,11 +197,11 @@ class Cache(BaseCache):
         # diskcache allow "disk_*" args
         **settings: Any,
     ) -> None: ...
-    def read(self, key: KeyType, retry: bool = ...) -> ValueType: ...
+    def read(self, key: Any, retry: bool = ...) -> Any: ...
     @overload
     def push(
         self,
-        value: ValueType,
+        value: Any,
         prefix: None = ...,
         side: ServerSide = ...,
         expire: ExpireTime = ...,
@@ -220,7 +212,7 @@ class Cache(BaseCache):
     @overload
     def push(
         self,
-        value: ValueType,
+        value: Any,
         prefix: str = ...,
         side: ServerSide = ...,
         expire: ExpireTime = ...,
@@ -231,7 +223,7 @@ class Cache(BaseCache):
     @overload
     def push(
         self,
-        value: ValueType,
+        value: Any,
         prefix: str | None = ...,
         side: ServerSide = ...,
         expire: ExpireTime = ...,
