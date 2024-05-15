@@ -14,19 +14,18 @@ from typing import (
 
 from _typeshed import StrOrBytesPath
 from diskcache.core import Cache
-from typing_extensions import ParamSpec, Self, TypeVar
+from typing_extensions import Self, TypeVar
 
 from ._typeshed import Ignore, KeyValuePair, Memoized, NullablePair, ServerSide
 
 __all__ = ["Deque", "Index"]
 
-_T = TypeVar("_T")
-_P = ParamSpec("_P")
 _AnyDefault: Iterable[Any] = ()
 _AnyT = TypeVar("_AnyT", bound=Any)
 _ValueWithoutDefaultT = TypeVar("_ValueWithoutDefaultT", bound=Any)
 _KeyT = TypeVar("_KeyT", bound=Any, default=Any)
 _ValueT = TypeVar("_ValueT", bound=Any, default=Any)
+_F = TypeVar("_F", bound=Callable[..., Any])
 
 class Deque(Sequence[_ValueT], Generic[_ValueT]):
     __hash__: None  # type: ignore[assignment]
@@ -146,5 +145,5 @@ class Index(MutableMapping[_KeyT, _ValueT], Generic[_KeyT, _ValueT]):
     def __ne__(self, other: object) -> bool: ...
     def memoize(
         self, name: str | None = ..., typed: bool = ..., ignore: Ignore = ...
-    ) -> Callable[[Callable[_P, _T]], Memoized[_P, _T]]: ...
+    ) -> Callable[[_F], Memoized[_F]]: ...
     def transact(self) -> ContextManager[None]: ...

@@ -1,14 +1,22 @@
 import warnings
-from typing import Any, Container, ContextManager, Iterator, Literal, Protocol, overload
+from typing import (
+    Any,
+    Callable,
+    Container,
+    ContextManager,
+    Iterator,
+    Literal,
+    Protocol,
+    overload,
+)
 
 from _typeshed import Incomplete
 from diskcache import Disk
-from typing_extensions import ParamSpec, Self, TypeAlias, TypedDict, TypeVar
+from typing_extensions import Self, TypeAlias, TypedDict, TypeVar
 
 _T = TypeVar("_T")
-_T_co = TypeVar("_T_co", covariant=True)
-_P = ParamSpec("_P")
 _IntOrStrT = TypeVar("_IntOrStrT", bound=int | str)
+_F = TypeVar("_F", bound=Callable[..., Any])
 
 DbName: TypeAlias = Literal["cache.db"]
 ModeNone: TypeAlias = Literal[0]
@@ -35,9 +43,9 @@ EvictionPolicyKey: TypeAlias = Literal[
 EvictionPolicyItemKey: TypeAlias = Literal["init", "get", "cull"]
 EvictionPolicyItem: TypeAlias = dict[EvictionPolicyItemKey, str | None]
 
-class Memoized(Protocol[_P, _T_co]):
-    def __call__(self, *args: _P.args, **kwds: _P.kwargs) -> _T_co: ...
-    def __cache_key__(self, *args: _P.args, **kwds: _P.kwargs) -> tuple[Any, ...]: ...
+class Memoized(Protocol[_F]):
+    __call__: _F
+    def __cache_key__(self, *args: Any, **kwargs: Any) -> tuple[Any, ...]: ...
 
 class Settings(TypedDict, total=False):
     statistics: int
