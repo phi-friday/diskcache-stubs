@@ -1,7 +1,8 @@
+# pyright: basic
 # ruff: noqa
 # mypy: ignore-errors
 from _typeshed import Incomplete
-from django.core.cache.backends.base import BaseCache
+from django.core.cache.backends.base import BaseCache  # pyright: ignore[reportMissingImports]
 
 __all__ = ["DjangoCache"]
 
