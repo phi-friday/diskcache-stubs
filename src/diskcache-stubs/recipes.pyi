@@ -59,7 +59,7 @@ class RLock(_Lock):
     def __exit__(self, *exc_info: object) -> None: ...
 
 class BoundedSemaphore:
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         cache: BaseCache,
         key: Any,

@@ -572,7 +572,7 @@ class Cache(BaseCache):
         | tuple[KeyValuePair[Any], ExpireTime, Tag]
     ): ...
     """
-    def memoize(  # noqa: PLR0913
+    def memoize(
         self,
         name: str | None = ...,
         typed: bool = ...,

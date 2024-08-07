@@ -270,7 +270,7 @@ class BaseCache(Protocol):
     """
     def __getitem__(self, key: Any) -> Any: ...
     def __contains__(self, key: Any) -> bool: ...
-    def pop(  # noqa: PLR0913
+    def pop(
         self,
         key: Any,
         default: Any = ...,
