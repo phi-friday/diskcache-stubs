@@ -2,7 +2,7 @@ import sqlite3
 from typing import Any, BinaryIO, Callable, Final, Generator, Generic, Literal, overload
 
 from _typeshed import StrOrBytesPath
-from typing_extensions import Self, TypeVar, Unpack
+from typing_extensions import ParamSpec, Self, TypeVar, Unpack
 
 from ._typeshed import (
     BaseCache,
@@ -55,7 +55,7 @@ _T = TypeVar("_T")
 _BoundStrT = TypeVar("_BoundStrT", bound=str)
 _PutT1 = TypeVar("_PutT1", bound=str | int | float)
 _PutT2 = TypeVar("_PutT2", bound=int | float)
-_F = TypeVar("_F", bound=Callable[..., Any])
+_P = ParamSpec("_P")
 
 def full_name(func: Callable[..., Any]) -> str: ...
 
@@ -579,7 +579,7 @@ class Cache(BaseCache):
         expire: ExpireTime = ...,
         tag: Tag = ...,
         ignore: Ignore = ...,
-    ) -> Callable[[_F], Memoized[_F]]: ...
+    ) -> Callable[[Callable[_P, _T]], Memoized[_P, _T]]: ...
     def expire(self, now: ExpireTime = ..., retry: bool = ...) -> int: ...
     def iterkeys(self, reverse: bool = ...) -> Generator[Any, None, None]: ...
     def __getstate__(self) -> tuple[str, int, type[Disk]]: ...

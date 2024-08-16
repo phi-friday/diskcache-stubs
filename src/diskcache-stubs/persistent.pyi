@@ -14,7 +14,7 @@ from typing import (
 
 from _typeshed import StrOrBytesPath
 from diskcache.core import Cache
-from typing_extensions import Self, TypeVar
+from typing_extensions import ParamSpec, Self, TypeVar
 
 from ._typeshed import Ignore, KeyValuePair, Memoized, NullablePair, ServerSide
 
@@ -25,7 +25,8 @@ _AnyT = TypeVar("_AnyT", bound=Any)
 _ValueWithoutDefaultT = TypeVar("_ValueWithoutDefaultT", bound=Any)
 _KeyT = TypeVar("_KeyT", bound=Any, default=Any)
 _ValueT = TypeVar("_ValueT", bound=Any, default=Any)
-_F = TypeVar("_F", bound=Callable[..., Any])
+_T = TypeVar("_T")
+_P = ParamSpec("_P")
 
 class Deque(Sequence[_ValueT], Generic[_ValueT]):
     __hash__: None  # type: ignore[assignment]
@@ -145,5 +146,5 @@ class Index(MutableMapping[_KeyT, _ValueT], Generic[_KeyT, _ValueT]):
     def __ne__(self, other: object) -> bool: ...
     def memoize(
         self, name: str | None = ..., typed: bool = ..., ignore: Ignore = ...
-    ) -> Callable[[_F], Memoized[_F]]: ...
+    ) -> Callable[[Callable[_P, _T]], Memoized[_P, _T]]: ...
     def transact(self) -> ContextManager[None]: ...
