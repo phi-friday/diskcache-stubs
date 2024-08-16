@@ -43,6 +43,9 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/diskcache-stubs"]
 
+[tool.hatch.build.targets.sdist]
+include = ["src/diskcache-stubs"]
+
 [tool.mypy]
 python_version = "3.8"
 strict = true
