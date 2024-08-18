@@ -1,5 +1,14 @@
 import warnings
-from typing import Any, Container, ContextManager, Iterator, Literal, Protocol, overload
+from typing import (
+    Any,
+    Callable,
+    Container,
+    ContextManager,
+    Iterator,
+    Literal,
+    Protocol,
+    overload,
+)
 
 from _typeshed import Incomplete
 from diskcache import Disk
@@ -339,3 +348,11 @@ class BaseCache(Protocol):
     def reset(self, key: str, value: _T, update: bool = ...) -> _T: ...
     @overload
     def reset(self, key: str, value: Any = ..., update: bool = ...) -> Any: ...
+    def memoize(
+        self,
+        name: str | None = ...,
+        typed: bool = ...,
+        expire: ExpireTime = ...,
+        tag: Tag = ...,
+        ignore: Ignore = ...,
+    ) -> Callable[[Callable[_P, _T]], Memoized[_P, _T]]: ...
