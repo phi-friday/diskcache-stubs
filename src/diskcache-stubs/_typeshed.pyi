@@ -44,7 +44,7 @@ EvictionPolicyKey: TypeAlias = Literal[
 EvictionPolicyItemKey: TypeAlias = Literal["init", "get", "cull"]
 EvictionPolicyItem: TypeAlias = dict[EvictionPolicyItemKey, str | None]
 
-class MemoizedFactory:
+class MemoizedFactory(Protocol):
     def __call__(self, func: Callable[_P, _T_co]) -> Memoized[_P, _T_co]: ...
 
 class Memoized(Protocol[_P, _T_co]):
