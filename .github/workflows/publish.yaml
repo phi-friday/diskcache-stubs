@@ -8,9 +8,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     name: "Publish library"
-    strategy:
-      matrix:
-        python-version: ["3.8"]
 
     steps:
       - name: Check out
@@ -19,20 +16,17 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           fetch-depth: 0
 
-      - name: Install rye
-        uses: phi-friday/install-rye@v2
-        id: install-rye
-        with:
-          python_version: ${{ matrix.python-version }}
+      - name: Set up uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Build package
         run: |
-          rye install dunamai
-          VERSION=$(dunamai from any --no-metadata --style pep440).$(date +"%Y%m%d")
-          rye version $VERSION
-          rye build
+          VERSION=$(uvx dunamai from any --no-metadata --style pep440).$(date +"%Y%m%d")
+          echo $VERSION
+          sed -i'' -E "s/version = \"0.0.0\"/version = \"$VERSION\"/g" pyproject.toml
+          uvx --from build pyproject-build --installer uv
 
       - name: Release to PyPI
         run: |
-          rye publish --yes \
-          --username __token__ --token ${{ secrets.PYPI_API_TOKEN }}
+          uvx twine upload dist/* --non-interactive \
+          --username __token__ --password ${{ secrets.PYPI_API_TOKEN }}
