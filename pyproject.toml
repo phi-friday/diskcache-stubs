@@ -25,10 +25,10 @@ Repository = "https://github.com/phi-friday/diskcache-stubs"
 
 [project.optional-dependencies]
 mypy = [
-    "mypy>=1.11.2",
+    "mypy>=1.12.0",
 ]
 mypy-strict = [
-    "mypy==1.11.2",
+    "mypy==1.12.0",
     "diskcache-stubs[mypy]",
 ]
 
