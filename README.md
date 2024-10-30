@@ -4,9 +4,14 @@
 [![PyPI version](https://badge.fury.io/py/diskcache-stubs.svg)](https://badge.fury.io/py/diskcache-stubs)
 [![python version](https://img.shields.io/pypi/pyversions/diskcache-stubs.svg)](#)
 
-Warning: This library provides type hints only.
-If you need the runtime package,
-you can find it [`python-diskcache`](https://github.com/grantjenks/python-diskcache).
+> [!CAUTION]
+> You can see in [`here`](https://github.com/phi-friday/typed-diskcache?tab=readme-ov-file#why-use-typed-diskcache)
+> why this library is no longer maintained.
+
+> [!WARNING]
+> This library provides type hints only.
+> If you need the runtime package,
+> you can find it [`python-diskcache`](https://github.com/grantjenks/python-diskcache).
 
 ## how to install
 ```shell
